@@ -420,49 +420,52 @@
     const toolName = TOOL_NAMES[tool] || tool;
 
     const html = `
-      <div class="result-card fade-in">
-        <div class="item">
-          <span class="label">材料/刀具</span>
-          <span class="value">${matName} + ${toolName}</span>
+      <div class="result-header fade-in">
+        <h3>📊 推荐结果</h3>
+        <span class="risk-badge ${riskInfo.cls}">${riskInfo.text}</span>
+      </div>
+      <div class="tool-dir-card fade-in">
+        <span class="tool-dir-label">推荐刀具方向</span>
+        <span class="tool-dir-value">${dirInfo.text}</span>
+      </div>
+      <div style="font-size:0.82rem;color:var(--text-muted);margin-bottom:12px;text-align:center;">
+        ${matName} · ${toolName}
+      </div>
+
+      <div class="result-grid fade-in">
+        <div class="result-data-card">
+          <div class="data-label">⚡ 推荐线速度 Vc</div>
+          <div class="data-value">${fmtRange(vcMin, vcMax, "")}</div>
+          <span class="data-unit">m/min</span>
         </div>
-        <div class="item">
-          <span class="label">推荐刀具方向</span>
-          <span class="value"><span class="tool-dir-badge ${dirInfo.cls}">${dirInfo.text}</span></span>
+        <div class="result-data-card">
+          <div class="data-label">🔄 推荐主轴转速 S</div>
+          <div class="data-value">${fmtRange(sMin, sMax, "")}</div>
+          <span class="data-unit">rpm</span>
         </div>
-        <div class="item">
-          <span class="label">推荐线速度 Vc</span>
-          <span class="value">${fmtRange(vcMin, vcMax, "m/min")}</span>
+        <div class="result-data-card">
+          <div class="data-label">⚙️ 推荐每齿进给 Fz</div>
+          <div class="data-value">${fmtRange(fzMin, fzMax, "")}</div>
+          <span class="data-unit">mm/tooth</span>
         </div>
-        <div class="item">
-          <span class="label">推荐主轴转速 S</span>
-          <span class="value">${fmtRange(sMin, sMax, "rpm")}</span>
-        </div>
-        <div class="item">
-          <span class="label">推荐每齿进给 Fz</span>
-          <span class="value">${fmtRange(fzMin, fzMax, "mm/tooth")}</span>
-        </div>
-        <div class="item">
-          <span class="label">推荐每分钟进给 F</span>
-          <span class="value">${fmtRange(fMin, fMax, "mm/min")}</span>
-        </div>
-        <div class="item">
-          <span class="label">风险等级</span>
-          <span class="value"><span class="${riskInfo.cls}">${riskInfo.text}</span></span>
+        <div class="result-data-card">
+          <div class="data-label">📈 推荐每分钟进给 F</div>
+          <div class="data-value">${fmtRange(fMin, fMax, "")}</div>
+          <span class="data-unit">mm/min</span>
         </div>
       </div>
-      <div class="result-card fade-in" style="margin-top:12px;">
-        <div class="item" style="border-bottom: none; flex-direction: column; align-items: flex-start; gap: 6px;">
-          <span class="label" style="margin-bottom:4px;">⚠ 风险提醒</span>
-          <span style="font-size:0.85rem;line-height:1.6;color:var(--text);">${riskWarning}</span>
+      <div class="risk-card ${risk} fade-in">
+        <div class="risk-row">
+          <span class="risk-label">⚠ 风险提醒</span>
+          <span class="risk-badge ${riskInfo.cls}">${riskInfo.text}</span>
         </div>
+        <div class="risk-desc">${riskWarning}</div>
       </div>
-      <div class="result-card fade-in" style="margin-top:12px;">
-        <div class="item" style="border-bottom: none; flex-direction: column; align-items: flex-start; gap: 6px;">
-          <span class="label" style="margin-bottom:4px;">💡 调整建议</span>
-          <ul style="font-size:0.85rem;line-height:1.8;color:var(--text);padding-left:18px;margin:0;">
-            ${adjTips.map(t => `<li>${t}</li>`).join("")}
-          </ul>
-        </div>
+      <div class="tips-card fade-in">
+        <div class="tips-title">💡 老师傅调整建议</div>
+        <ul>
+          ${adjTips.map(t => `<li>${t}</li>`).join("")}
+        </ul>
       </div>
     `;
 
@@ -472,7 +475,7 @@
   function showResult(type, msg) {
     const cls = type === "error" ? "warning-text" : "tip-text";
     document.getElementById("resultArea").innerHTML = `
-      <div class="result-card fade-in" style="text-align:center;">
+      <div class="risk-card high fade-in" style="text-align:center;">
         <div class="${cls}" style="font-size:1rem;">${msg}</div>
       </div>
     `;
