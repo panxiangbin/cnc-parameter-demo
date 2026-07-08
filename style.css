@@ -662,67 +662,73 @@ input[type="number"]::-webkit-inner-spin-button { -webkit-appearance: none; marg
 
 
 /* ============================================
-   计算器方块网格（移动端：6色方块）
+   移动端：6色计算器方块网格
    ============================================ */
 @media (max-width: 700px) {
+  /* 折叠时 = 彩色方块，2列网格 */
   .calc-grid {
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(2, 1fr);
     gap: 10px;
   }
 
-  /* 展开状态保留自然高度 */
-  .calc-card:not(:has(.calc-card-body.hidden)) {
-    grid-column: 1 / -1;
-    aspect-ratio: auto;
-  }
-  .calc-card:not(:has(.calc-card-body.hidden)) .calc-card-header {
-    padding: 14px 16px;
-    flex-direction: row;
-    border-radius: var(--radius-md) var(--radius-md) 0 0;
-  }
-  .calc-card:not(:has(.calc-card-body.hidden)) .calc-card-header .arrow {
-    display: inline-block;
-  }
-
-  /* 折叠状态 = 彩色方块 */
-  .calc-card {
+  /* 折叠状态的卡片 = 彩色方块 */
+  .calc-card.calc-collapsed {
     aspect-ratio: 1 / 1;
-    position: relative;
+    overflow: visible;
   }
-  .calc-card .calc-card-header {
+  .calc-card.calc-collapsed .calc-card-header {
     height: 100%;
     width: 100%;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    gap: 6px;
-    padding: 8px 6px;
+    gap: 4px;
+    padding: 8px 4px;
     text-align: center;
     cursor: pointer;
     border-radius: var(--radius-md);
     transition: transform 0.15s, box-shadow 0.15s;
   }
-  .calc-card .calc-card-header:hover {
-    transform: scale(1.04);
+  .calc-card.calc-collapsed .calc-card-header:hover {
+    transform: scale(1.05);
     box-shadow: 0 6px 20px rgba(0,0,0,0.15);
   }
-  .calc-card .calc-card-header:active {
+  .calc-card.calc-collapsed .calc-card-header:active {
     transform: scale(0.96);
   }
-  .calc-card .calc-card-header .arrow {
+  .calc-card.calc-collapsed .calc-card-header .arrow {
     display: none;
   }
-  .calc-card .calc-card-header .tile-icon {
-    font-size: 1.6rem;
+  .calc-card.calc-collapsed .calc-card-header .tile-icon {
+    font-size: 1.8rem;
   }
-  .calc-card .calc-card-header .tile-label {
-    font-size: 0.72rem;
+  .calc-card.calc-collapsed .calc-card-header .tile-label {
+    font-size: 0.75rem;
     font-weight: 600;
-    line-height: 1.25;
+    line-height: 1.2;
   }
 
-  /* 展开态：body 显示 */
+  /* 展开态：独占一行，自然高度 */
+  .calc-card:not(.calc-collapsed) {
+    grid-column: 1 / -1;
+  }
+  .calc-card:not(.calc-collapsed) .calc-card-header {
+    padding: 12px 14px;
+    flex-direction: row;
+    border-radius: var(--radius-md) var(--radius-md) 0 0;
+  }
+  .calc-card:not(.calc-collapsed) .calc-card-header .arrow {
+    display: inline-block;
+  }
+  .calc-card:not(.calc-collapsed) .calc-card-header .tile-icon {
+    font-size: 1.2rem;
+  }
+  .calc-card:not(.calc-collapsed) .calc-card-header .tile-label {
+    font-size: 0.85rem;
+  }
+
+  /* 展开后的 body */
   .calc-card-body.open {
     padding: 10px 14px 14px;
   }
@@ -749,16 +755,16 @@ input[type="number"]::-webkit-inner-spin-button { -webkit-appearance: none; marg
   }
 }
 
-/* 极小屏时 2 列 */
+/* 极小屏 */
 @media (max-width: 420px) {
   .calc-grid {
     grid-template-columns: repeat(2, 1fr);
     gap: 8px;
   }
-  .calc-card .calc-card-header .tile-icon {
-    font-size: 1.3rem;
+  .calc-card.calc-collapsed .calc-card-header .tile-icon {
+    font-size: 1.4rem;
   }
-  .calc-card .calc-card-header .tile-label {
+  .calc-card.calc-collapsed .calc-card-header .tile-label {
     font-size: 0.65rem;
   }
 }

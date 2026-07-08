@@ -487,13 +487,46 @@
   function setupCalculators() {
     const cards = document.querySelectorAll(".calc-card");
 
-    // 折叠/展开
+    // 初始状态：全部折叠
+    cards.forEach(card => {
+      const body = card.querySelector(".calc-card-body");
+      body.classList.add("hidden");
+      const header = card.querySelector(".calc-card-header");
+      header.classList.add("collapsed");
+      card.classList.add("calc-collapsed");
+    });
+
+    // 点击方块 → 手风琴式展开/收起
     cards.forEach(card => {
       const header = card.querySelector(".calc-card-header");
-      header.addEventListener("click", function () {
+      header.addEventListener("click", function (e) {
+        if (e.target.closest(".calc-btn")) return;
+
         const body = card.querySelector(".calc-card-body");
-        body.classList.toggle("hidden");
-        header.classList.toggle("collapsed");
+        const isAlreadyOpen = !body.classList.contains("hidden");
+
+        cards.forEach(other => {
+          const ob = other.querySelector(".calc-card-body");
+          const oh = other.querySelector(".calc-card-header");
+          if (other !== card) {
+            ob.classList.add("hidden");
+            ob.classList.remove("open");
+            oh.classList.add("collapsed");
+            other.classList.add("calc-collapsed");
+          }
+        });
+
+        if (isAlreadyOpen) {
+          body.classList.add("hidden");
+          body.classList.remove("open");
+          header.classList.add("collapsed");
+          card.classList.add("calc-collapsed");
+        } else {
+          body.classList.remove("hidden");
+          body.classList.add("open");
+          header.classList.remove("collapsed");
+          card.classList.remove("calc-collapsed");
+        }
       });
     });
 
@@ -857,4 +890,6 @@
     init();
   }
 })();
+
+
 
