@@ -284,7 +284,7 @@
   // ==========================================
   // 7. 风险等级
   // ==========================================
-  function getRiskLevel(mat, process, rigidity, clamp, tool, hardness) {
+  function getRiskLevel(mat, process, rigidity, clampVal, tool, hardness) {
     let score = 0;
 
     // 材料风险
@@ -301,7 +301,7 @@
 
     // 装夹风险
     const clampRisk = { chatter: 3, slender: 2, overhang: 1 };
-    if (clampRisk[clamp]) score += clampRisk[clamp];
+    if (clampRisk[clampVal]) score += clampRisk[clampVal];
 
     // 硬度风险
     if (hardness !== null) {
@@ -338,7 +338,7 @@
     const dia = toNum(document.getElementById("tool_dia").value);
     const teeth = toNum(document.getElementById("tool_teeth").value);
     const rigidity = document.getElementById("rigidity").value;
-    const clamp = document.getElementById("clamp").value;
+    const clampVal = document.getElementById("clamp").value;
 
     // 验证必填项
     if (!dia || dia <= 0) {
@@ -373,7 +373,7 @@
     vcMax *= rigFactor;
 
     // 装夹调整
-    const clampFactor = CLAMP_ADJUST[clamp] || 1.0;
+    const clampFactor = CLAMP_ADJUST[clampVal] || 1.0;
     vcMin *= clampFactor;
     vcMax *= clampFactor;
 
@@ -391,7 +391,7 @@
     const fMax = Math.round(sMax * teeth * fzMax);
 
     // 风险等级
-    const risk = getRiskLevel(mat, process, rigidity, clamp, tool, hVal);
+    const risk = getRiskLevel(mat, process, rigidity, clampVal, tool, hVal);
     const riskInfo = RISK_LABELS[risk];
     const riskWarning = RISK_WARNINGS[risk];
 
@@ -854,3 +854,4 @@
     init();
   }
 })();
+
