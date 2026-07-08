@@ -1,0 +1,548 @@
+﻿/* ============================================
+   CNC刀具参数助手 - 样式表
+   浅色高级感 · 移动端优先
+   ============================================ */
+
+/* --- Reset & Base --- */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+:root {
+  --bg: #F7F4EC;
+  --surface: #FFFFFF;
+  --surface-soft: #F3F7FA;
+  --border: #E5E7EB;
+  --text: #1F2933;
+  --muted: #6B7280;
+  --primary: #2563EB;
+  --teal: #0F766E;
+  --success: #16A34A;
+  --warning: #F97316;
+  --danger: #DC2626;
+  --radius: 12px;
+  --radius-sm: 8px;
+  --shadow: 0 1px 3px rgba(0,0,0,0.06), 0 1px 2px rgba(0,0,0,0.04);
+  --shadow-md: 0 4px 12px rgba(0,0,0,0.08);
+  --max-width: 480px;
+  --input-h: 48px;
+  --btn-h: 48px;
+  --gap: 16px;
+}
+
+html {
+  font-size: 16px;
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.6;
+  min-height: 100vh;
+  padding: 0;
+  overflow-x: hidden;
+}
+
+/* --- App Container --- */
+.app-container {
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding: 0 var(--gap) var(--gap);
+  min-height: 100vh;
+}
+
+/* --- Header --- */
+.app-header {
+  padding: 24px 0 16px;
+  text-align: center;
+}
+
+.app-header h1 {
+  font-size: 1.35rem;
+  font-weight: 700;
+  color: var(--text);
+  letter-spacing: 0.02em;
+}
+
+.app-header .subtitle {
+  font-size: 0.85rem;
+  color: var(--muted);
+  margin-top: 4px;
+}
+
+/* --- Tabs --- */
+.tab-bar {
+  display: flex;
+  background: var(--surface);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  margin-bottom: var(--gap);
+  overflow: hidden;
+  border: 1px solid var(--border);
+}
+
+.tab-btn {
+  flex: 1;
+  height: var(--btn-h);
+  border: none;
+  background: transparent;
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: var(--muted);
+  cursor: pointer;
+  transition: all 0.2s;
+  position: relative;
+  padding: 0 4px;
+}
+
+.tab-btn:not(:last-child)::after {
+  content: "";
+  position: absolute;
+  right: 0;
+  top: 25%;
+  height: 50%;
+  width: 1px;
+  background: var(--border);
+}
+
+.tab-btn.active {
+  color: var(--primary);
+  font-weight: 600;
+  background: var(--surface-soft);
+}
+
+.tab-btn:active {
+  opacity: 0.7;
+}
+
+/* --- Panels --- */
+.tab-panel {
+  display: none;
+}
+
+.tab-panel.active {
+  display: block;
+}
+
+/* --- Card --- */
+.card {
+  background: var(--surface);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  border: 1px solid var(--border);
+  padding: var(--gap);
+  margin-bottom: var(--gap);
+}
+
+.card-title {
+  font-size: 1rem;
+  font-weight: 600;
+  margin-bottom: 12px;
+  color: var(--text);
+}
+
+/* --- Form Groups --- */
+.form-group {
+  margin-bottom: 14px;
+}
+
+.form-group label {
+  display: block;
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: var(--text);
+  margin-bottom: 5px;
+}
+
+.form-group label .hint {
+  font-weight: 400;
+  color: var(--muted);
+  font-size: 0.78rem;
+}
+
+select, input[type="text"], input[type="number"] {
+  width: 100%;
+  height: var(--input-h);
+  padding: 0 14px;
+  font-size: 0.95rem;
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius-sm);
+  background: var(--surface);
+  color: var(--text);
+  outline: none;
+  transition: border-color 0.2s;
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+select {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%236B7280' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 12px center;
+  padding-right: 36px;
+}
+
+select:focus, input:focus {
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px rgba(37,99,235,0.1);
+}
+
+input[type="number"] {
+  -moz-appearance: textfield;
+}
+
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.form-row {
+  display: flex;
+  gap: 10px;
+}
+
+.form-row .form-group {
+  flex: 1;
+}
+
+/* --- Buttons --- */
+.btn-group {
+  display: flex;
+  gap: 10px;
+  margin-top: 6px;
+  flex-wrap: wrap;
+}
+
+.btn {
+  height: var(--btn-h);
+  border: none;
+  border-radius: var(--radius-sm);
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.15s;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 24px;
+  flex: 1;
+  min-width: 80px;
+}
+
+.btn:active {
+  transform: scale(0.97);
+}
+
+.btn-primary {
+  background: var(--primary);
+  color: #fff;
+}
+
+.btn-primary:hover {
+  background: #1d4ed8;
+}
+
+.btn-outline {
+  background: transparent;
+  color: var(--muted);
+  border: 1.5px solid var(--border);
+}
+
+.btn-outline:hover {
+  background: var(--surface-soft);
+  border-color: var(--muted);
+}
+
+.btn-teal {
+  background: var(--teal);
+  color: #fff;
+}
+
+.btn-teal:hover {
+  background: #0d6d62;
+}
+
+/* --- Result Card --- */
+.result-card {
+  background: var(--surface-soft);
+  border-radius: var(--radius);
+  padding: var(--gap);
+  margin-top: var(--gap);
+  border: 1px solid var(--border);
+}
+
+.result-card .item {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  padding: 8px 0;
+  border-bottom: 1px dashed var(--border);
+  font-size: 0.9rem;
+}
+
+.result-card .item:last-child {
+  border-bottom: none;
+}
+
+.result-card .item .label {
+  color: var(--muted);
+  flex-shrink: 0;
+  margin-right: 12px;
+}
+
+.result-card .item .value {
+  font-weight: 600;
+  text-align: right;
+  word-break: break-all;
+}
+
+/* --- Risk Badges --- */
+.risk-low {
+  color: var(--success);
+  background: rgba(22,163,74,0.1);
+  padding: 2px 10px;
+  border-radius: 999px;
+  font-weight: 600;
+  font-size: 0.85rem;
+}
+
+.risk-mid {
+  color: var(--warning);
+  background: rgba(249,115,22,0.1);
+  padding: 2px 10px;
+  border-radius: 999px;
+  font-weight: 600;
+  font-size: 0.85rem;
+}
+
+.risk-high {
+  color: var(--danger);
+  background: rgba(220,38,38,0.1);
+  padding: 2px 10px;
+  border-radius: 999px;
+  font-weight: 600;
+  font-size: 0.85rem;
+}
+
+/* --- Warning Text --- */
+.warning-text {
+  color: var(--danger);
+  font-size: 0.85rem;
+  font-weight: 500;
+  margin-top: 8px;
+}
+
+.tip-text {
+  color: var(--teal);
+  font-size: 0.85rem;
+  margin-top: 8px;
+}
+
+/* --- Disclaimer --- */
+.disclaimer {
+  text-align: center;
+  font-size: 0.75rem;
+  color: var(--muted);
+  padding: 16px 0 24px;
+  line-height: 1.7;
+  border-top: 1px solid var(--border);
+  margin-top: 8px;
+}
+
+/* --- Tab 2: Calculator Grid --- */
+.calc-grid {
+  display: flex;
+  flex-direction: column;
+  gap: var(--gap);
+}
+
+.calc-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  overflow: hidden;
+}
+
+.calc-card-header {
+  padding: 12px var(--gap);
+  background: var(--surface-soft);
+  font-weight: 600;
+  font-size: 0.9rem;
+  border-bottom: 1px solid var(--border);
+  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  user-select: none;
+}
+
+.calc-card-header .arrow {
+  transition: transform 0.25s;
+  font-size: 0.75rem;
+  color: var(--muted);
+}
+
+.calc-card-header.collapsed .arrow {
+  transform: rotate(-90deg);
+}
+
+.calc-card-body {
+  padding: var(--gap);
+}
+
+.calc-card-body.hidden {
+  display: none;
+}
+
+.calc-result {
+  margin-top: 10px;
+  padding: 10px;
+  background: var(--surface-soft);
+  border-radius: var(--radius-sm);
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--primary);
+  text-align: center;
+}
+
+/* --- Tab 3: Diagnosis --- */
+.diag-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.diag-item {
+  padding: 14px var(--gap);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  font-size: 0.9rem;
+  transition: all 0.15s;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.diag-item:hover {
+  border-color: var(--primary);
+  background: var(--surface-soft);
+}
+
+.diag-item:active {
+  transform: scale(0.98);
+}
+
+.diag-item .arrow-icon {
+  color: var(--muted);
+  font-size: 0.8rem;
+}
+
+.diag-detail {
+  display: none;
+  margin-top: 8px;
+}
+
+.diag-detail.open {
+  display: block;
+}
+
+.diag-detail h4 {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--text);
+  margin: 12px 0 6px;
+}
+
+.diag-detail h4:first-child {
+  margin-top: 0;
+}
+
+.diag-detail ul {
+  list-style: disc;
+  padding-left: 20px;
+  font-size: 0.85rem;
+  color: var(--text);
+  line-height: 1.7;
+}
+
+.diag-detail ol {
+  list-style: decimal;
+  padding-left: 20px;
+  font-size: 0.85rem;
+  color: var(--text);
+  line-height: 1.7;
+}
+
+.diag-detail .highlight-box {
+  background: rgba(37,99,235,0.06);
+  border-left: 3px solid var(--primary);
+  padding: 10px 14px;
+  border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+  font-size: 0.85rem;
+  margin-top: 8px;
+  line-height: 1.7;
+}
+
+/* --- Tool direction badge --- */
+.tool-dir-badge {
+  display: inline-block;
+  padding: 4px 12px;
+  border-radius: 999px;
+  font-weight: 600;
+  font-size: 0.85rem;
+}
+
+.dir-climb {
+  background: rgba(15,118,110,0.1);
+  color: var(--teal);
+}
+
+.dir-conventional {
+  background: rgba(249,115,22,0.1);
+  color: var(--warning);
+}
+
+/* --- Empty state --- */
+.empty-state {
+  text-align: center;
+  padding: 32px 16px;
+  color: var(--muted);
+  font-size: 0.9rem;
+}
+
+/* --- Animations --- */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.fade-in {
+  animation: fadeIn 0.25s ease-out;
+}
+
+/* --- Responsive --- */
+@media (min-width: 768px) {
+  .app-container {
+    padding: 0 24px 24px;
+  }
+  
+  .calc-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--gap);
+  }
+}
+
+/* --- Input helper row --- */
+.input-helper {
+  font-size: 0.75rem;
+  color: var(--muted);
+  margin-top: 3px;
+}

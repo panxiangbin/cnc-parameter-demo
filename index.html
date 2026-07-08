@@ -1,0 +1,285 @@
+﻿<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="description" content="CNC刀具参数助手 - 根据材料、硬度、刀具和加工方式，给出转速进给参考范围">
+  <title>CNC刀具参数助手试用版</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="app-container" id="app">
+    <!-- Header -->
+    <header class="app-header">
+      <h1>🔧 CNC刀具参数助手</h1>
+      <div class="subtitle">根据材料、硬度、刀具和加工方式，给出转速进给参考范围</div>
+    </header>
+
+    <!-- Tab Bar -->
+    <nav class="tab-bar" role="tablist">
+      <button class="tab-btn active" data-tab="tab1" role="tab" aria-selected="true">材料硬度推荐</button>
+      <button class="tab-btn" data-tab="tab2" role="tab" aria-selected="false">参数计算</button>
+      <button class="tab-btn" data-tab="tab3" role="tab" aria-selected="false">异常排查</button>
+    </nav>
+
+    <!-- ==================== Tab 1: 材料硬度推荐 ==================== -->
+    <section class="tab-panel active" id="tab1" role="tabpanel">
+      <div class="card">
+        <div class="card-title">📋 加工参数设置</div>
+
+        <!-- 材料类型 -->
+        <div class="form-group">
+          <label>材料类型</label>
+          <select id="material">
+            <option value="aluminum">铝合金</option>
+            <option value="steel_45" selected>45钢</option>
+            <option value="steel_40cr">40Cr</option>
+            <option value="steel_42crmo">42CrMo</option>
+            <option value="die_steel">模具钢</option>
+            <option value="stainless">不锈钢</option>
+            <option value="cast_iron">铸铁</option>
+            <option value="copper">铜</option>
+            <option value="titanium">钛合金</option>
+            <option value="custom">自定义</option>
+          </select>
+        </div>
+
+        <!-- 硬度 -->
+        <div class="form-row">
+          <div class="form-group">
+            <label>硬度类型</label>
+            <select id="hardness_type">
+              <option value="hb">HB</option>
+              <option value="hrc">HRC</option>
+              <option value="unknown">未知</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>硬度数值</label>
+            <input type="text" id="hardness_value" inputmode="numeric" placeholder="如 220">
+            <div class="input-helper">选择"未知"时可留空</div>
+          </div>
+        </div>
+
+        <!-- 加工方式 -->
+        <div class="form-group">
+          <label>加工方式</label>
+          <select id="process">
+            <option value="face">平面铣</option>
+            <option value="side">侧铣</option>
+            <option value="slot">槽铣</option>
+            <option value="drill">钻孔</option>
+            <option value="tap">攻丝</option>
+            <option value="finish">精加工</option>
+            <option value="rough">粗加工</option>
+          </select>
+        </div>
+
+        <!-- 刀具类型 -->
+        <div class="form-group">
+          <label>刀具类型</label>
+          <select id="tool">
+            <option value="carbide">钨钢铣刀</option>
+            <option value="hss">高速钢刀具</option>
+            <option value="insert">机夹刀片</option>
+            <option value="coated">涂层刀</option>
+            <option value="al_tool">铝用刀</option>
+            <option value="ball">球刀</option>
+            <option value="drill_bit">钻头</option>
+            <option value="tap_tool">丝锥</option>
+          </select>
+        </div>
+
+        <!-- 刀具直径 + 刃数 -->
+        <div class="form-row">
+          <div class="form-group">
+            <label>刀具直径 D (mm)</label>
+            <input type="text" id="tool_dia" inputmode="decimal" placeholder="如 10">
+          </div>
+          <div class="form-group">
+            <label>刀具刃数 Z</label>
+            <input type="text" id="tool_teeth" inputmode="numeric" placeholder="如 4">
+          </div>
+        </div>
+
+        <!-- 机床刚性 + 装夹 -->
+        <div class="form-row">
+          <div class="form-group">
+            <label>机床刚性</label>
+            <select id="rigidity">
+              <option value="good">好</option>
+              <option value="normal" selected>一般</option>
+              <option value="poor">差</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>装夹情况</label>
+            <select id="clamp">
+              <option value="stable" selected>稳定</option>
+              <option value="overhang">悬伸长</option>
+              <option value="slender">工件细长</option>
+              <option value="chatter">容易震刀</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Buttons -->
+        <div class="btn-group">
+          <button class="btn btn-primary" id="btnGenerate">生成建议</button>
+          <button class="btn btn-outline" id="btnClear">清空</button>
+          <button class="btn btn-outline" id="btnExample">填入示例</button>
+        </div>
+      </div>
+
+      <!-- Result Area -->
+      <div id="resultArea"></div>
+    </section>
+
+    <!-- ==================== Tab 2: 参数计算 ==================== -->
+    <section class="tab-panel" id="tab2" role="tabpanel">
+      <div class="card">
+        <div class="card-title">🧮 常用计算器</div>
+        <div class="calc-grid" id="calcGrid">
+          <!-- 计算器1: 线速度转转速 -->
+          <div class="calc-card" data-calc="calc1">
+            <div class="calc-card-header">
+              <span>① 线速度 → 转速</span>
+              <span class="arrow">▼</span>
+            </div>
+            <div class="calc-card-body">
+              <p style="font-size:0.8rem;color:var(--muted);margin-bottom:10px;">S = 1000 × Vc ÷ π ÷ D</p>
+              <div class="form-group">
+                <label>线速度 Vc (m/min)</label>
+                <input type="text" class="calc-input calc-a" inputmode="decimal" placeholder="如 150">
+              </div>
+              <div class="form-group">
+                <label>刀具直径 D (mm)</label>
+                <input type="text" class="calc-input calc-b" inputmode="decimal" placeholder="如 10">
+              </div>
+              <button class="btn btn-teal calc-btn" style="margin-top:6px;">计算</button>
+              <div class="calc-result">-</div>
+            </div>
+          </div>
+
+          <!-- 计算器2: 转速转线速度 -->
+          <div class="calc-card" data-calc="calc2">
+            <div class="calc-card-header">
+              <span>② 转速 → 线速度</span>
+              <span class="arrow">▼</span>
+            </div>
+            <div class="calc-card-body">
+              <p style="font-size:0.8rem;color:var(--muted);margin-bottom:10px;">Vc = π × D × S ÷ 1000</p>
+              <div class="form-group">
+                <label>转速 S (rpm)</label>
+                <input type="text" class="calc-input calc-a" inputmode="decimal" placeholder="如 3000">
+              </div>
+              <div class="form-group">
+                <label>刀具直径 D (mm)</label>
+                <input type="text" class="calc-input calc-b" inputmode="decimal" placeholder="如 10">
+              </div>
+              <button class="btn btn-teal calc-btn" style="margin-top:6px;">计算</button>
+              <div class="calc-result">-</div>
+            </div>
+          </div>
+
+          <!-- 计算器3: 每齿进给算每分钟进给 -->
+          <div class="calc-card" data-calc="calc3">
+            <div class="calc-card-header">
+              <span>③ 每齿进给 → 每分钟进给</span>
+              <span class="arrow">▼</span>
+            </div>
+            <div class="calc-card-body">
+              <p style="font-size:0.8rem;color:var(--muted);margin-bottom:10px;">F = S × Z × Fz</p>
+              <div class="form-group">
+                <label>转速 S (rpm)</label>
+                <input type="text" class="calc-input calc-a" inputmode="decimal" placeholder="如 3000">
+              </div>
+              <div class="form-group">
+                <label>刃数 Z</label>
+                <input type="text" class="calc-input calc-b" inputmode="numeric" placeholder="如 4">
+              </div>
+              <div class="form-group">
+                <label>每齿进给 Fz (mm/tooth)</label>
+                <input type="text" class="calc-input calc-c" inputmode="decimal" placeholder="如 0.05">
+              </div>
+              <button class="btn btn-teal calc-btn" style="margin-top:6px;">计算</button>
+              <div class="calc-result">-</div>
+            </div>
+          </div>
+
+          <!-- 计算器4: 每转进给算每分钟进给 -->
+          <div class="calc-card" data-calc="calc4">
+            <div class="calc-card-header">
+              <span>④ 每转进给 → 每分钟进给</span>
+              <span class="arrow">▼</span>
+            </div>
+            <div class="calc-card-body">
+              <p style="font-size:0.8rem;color:var(--muted);margin-bottom:10px;">F = S × f</p>
+              <div class="form-group">
+                <label>转速 S (rpm)</label>
+                <input type="text" class="calc-input calc-a" inputmode="decimal" placeholder="如 3000">
+              </div>
+              <div class="form-group">
+                <label>每转进给 f (mm/rev)</label>
+                <input type="text" class="calc-input calc-b" inputmode="decimal" placeholder="如 0.2">
+              </div>
+              <button class="btn btn-teal calc-btn" style="margin-top:6px;">计算</button>
+              <div class="calc-result">-</div>
+            </div>
+          </div>
+
+          <!-- 计算器5: 英制牙数转螺距 -->
+          <div class="calc-card" data-calc="calc5">
+            <div class="calc-card-header">
+              <span>⑤ 英制牙数 → 螺距</span>
+              <span class="arrow">▼</span>
+            </div>
+            <div class="calc-card-body">
+              <p style="font-size:0.8rem;color:var(--muted);margin-bottom:10px;">P = 25.4 ÷ TPI</p>
+              <div class="form-group">
+                <label>每英寸牙数 TPI</label>
+                <input type="text" class="calc-input calc-a" inputmode="decimal" placeholder="如 11">
+              </div>
+              <button class="btn btn-teal calc-btn" style="margin-top:6px;">计算</button>
+              <div class="calc-result">-</div>
+            </div>
+          </div>
+
+          <!-- 计算器6: 半径转直径 -->
+          <div class="calc-card" data-calc="calc6">
+            <div class="calc-card-header">
+              <span>⑥ 半径 → 直径</span>
+              <span class="arrow">▼</span>
+            </div>
+            <div class="calc-card-body">
+              <p style="font-size:0.8rem;color:var(--muted);margin-bottom:10px;">D = 2 × R</p>
+              <div class="form-group">
+                <label>半径 R (mm)</label>
+                <input type="text" class="calc-input calc-a" inputmode="decimal" placeholder="如 5">
+              </div>
+              <button class="btn btn-teal calc-btn" style="margin-top:6px;">计算</button>
+              <div class="calc-result">-</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== Tab 3: 异常排查 ==================== -->
+    <section class="tab-panel" id="tab3" role="tabpanel">
+      <div class="card">
+        <div class="card-title">🔍 常见问题诊断</div>
+        <p style="font-size:0.85rem;color:var(--muted);margin-bottom:12px;">选择一个问题，查看可能原因和处理建议</p>
+        <div class="diag-list" id="diagList"></div>
+      </div>
+    </section>
+
+    <!-- Disclaimer -->
+    <div class="disclaimer">
+      本工具给出的参数仅作为初始参考。实际加工必须结合刀具品牌、刀具牌号、材料状态、机床刚性、装夹方式、切深切宽、冷却方式、现场声音、铁屑状态和刀具磨损情况综合判断。正式加工前请先小余量试切，不要直接满刀上参数。
+    </div>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
