@@ -3,18 +3,21 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <meta name="description" content="CNC刀具参数助手 - 根据材料、硬度、刀具和加工方式，给出转速进给参考范围">
-  <title>CNC刀具参数助手试用版</title>
+  <meta name="description" content="CNC刀具参数助手 v1.0 - 根据材料、硬度、刀具和加工方式，给出转速进给参考范围">
+  <title>CNC刀具参数助手 v1.0</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
   <div class="app-container" id="app">
     <!-- Header / Hero -->
     <header class="app-header">
-      <h1>🔧 CNC刀具参数助手</h1>
+      <div class="header-top">
+        <h1>🔧 CNC刀具参数助手</h1>
+        <button id="darkModeToggle" class="btn btn-outline btn-sm" title="切换深色模式">🌙</button>
+      </div>
       <div class="subtitle">根据材料、硬度、刀具和加工方式，给出转速进给参考范围</div>
       <div class="header-tags">
-        <span class="header-tag blue">试用版</span>
+        <span class="header-tag blue">v1.0</span>
         <span class="header-tag green">参数参考</span>
         <span class="header-tag orange">防崩刀提醒</span>
         <span class="header-tag gray">手机端工具</span>
@@ -42,10 +45,10 @@
             <option value="steel_40cr">40Cr</option>
             <option value="steel_42crmo">42CrMo</option>
             <option value="die_steel">模具钢</option>
-            <option value="stainless">不锈钢</option>
+            <option value="stainless">不铈钢</option>
             <option value="cast_iron">铸铁</option>
             <option value="copper">铜</option>
-            <option value="titanium">钛合金</option>
+            <option value="titanium">铀合金</option>
             <option value="custom">自定义</option>
           </select>
         </div>
@@ -71,9 +74,9 @@
         <div class="form-group">
           <label>加工方式</label>
           <select id="process">
-            <option value="face">平面铣</option>
-            <option value="side">侧铣</option>
-            <option value="slot">槽铣</option>
+            <option value="face">平面铰</option>
+            <option value="side">侧铰</option>
+            <option value="slot">槽铰</option>
             <option value="drill">钻孔</option>
             <option value="tap">攻丝</option>
             <option value="finish">精加工</option>
@@ -85,8 +88,8 @@
         <div class="form-group">
           <label>刀具类型</label>
           <select id="tool">
-            <option value="carbide">钨钢铣刀</option>
-            <option value="hss">高速钢刀具</option>
+            <option value="carbide">钨铝铰刀</option>
+            <option value="hss">高速铝刀具</option>
             <option value="insert">机夹刀片</option>
             <option value="coated">涂层刀</option>
             <option value="al_tool">铝用刀</option>
@@ -96,7 +99,7 @@
           </select>
         </div>
 
-        <!-- 刀具直径 + 刃数 -->
+        <!-- 刀具直径 + 刀具刃数 -->
         <div class="form-row">
           <div class="form-group">
             <label>刀具直径 D (mm)</label>
@@ -105,6 +108,20 @@
           <div class="form-group">
             <label>刀具刃数 Z</label>
             <input type="text" id="tool_teeth" inputmode="numeric" placeholder="如 4">
+          </div>
+        </div>
+
+        <!-- 新增：切深 ap + 切宽 ae -->
+        <div class="form-row">
+          <div class="form-group">
+            <label>切深 ap (mm)</label>
+            <input type="text" id="cut_depth" inputmode="decimal" placeholder="如 1.5">
+            <div class="input-helper">影响参数调整</div>
+          </div>
+          <div class="form-group">
+            <label>切宽 ae (mm)</label>
+            <input type="text" id="cut_width" inputmode="decimal" placeholder="如 8">
+            <div class="input-helper">影响参数调整</div>
           </div>
         </div>
 
@@ -135,10 +152,25 @@
           <button class="btn btn-outline" id="btnClear">清空</button>
           <button class="btn btn-outline" id="btnExample">填入示例</button>
         </div>
+
+        <!-- 导出按钮区域 -->
+        <div class="export-group" id="exportGroup" style="display:none; margin-top:12px;">
+          <div class="btn-group">
+            <button class="btn btn-teal btn-sm" id="btnCopyText">复制文本</button>
+            <button class="btn btn-teal btn-sm" id="btnCopyNotion">复制Notion格式</button>
+          </div>
+          <div class="export-hint">可直接粘贴到微信、Notion或短视频脚本</div>
+        </div>
       </div>
 
       <!-- Result Area -->
       <div id="resultArea"></div>
+
+      <!-- 历史记录区域 -->
+      <div class="card history-card" id="historyCard" style="display:none; margin-top:16px;">
+        <div class="card-title">📁 最近历史记录 <span class="history-hint">(点击加载)</span></div>
+        <div id="historyList" class="history-list"></div>
+      </div>
     </section>
 
     <!-- ==================== Tab 2: 参数计算 ==================== -->
@@ -195,7 +227,7 @@
           <div class="calc-card" data-calc="calc3">
             <div class="calc-card-header tile-orange">
               <span class="tile-icon">⚙️</span>
-              <span class="tile-label">每齿进给→每分钟进给</span>
+              <span class="tile-label">每齻进给→每分钟进给</span>
               <span class="arrow">▼</span>
             </div>
             <div class="calc-card-body">
@@ -209,7 +241,7 @@
                 <input type="text" class="calc-input calc-b" inputmode="numeric" placeholder="如 4">
               </div>
               <div class="form-group">
-                <label>每齿进给 Fz (mm/tooth)</label>
+                <label>每齻进给 Fz (mm/tooth)</label>
                 <input type="text" class="calc-input calc-c" inputmode="decimal" placeholder="如 0.05">
               </div>
               <button class="btn btn-teal calc-btn" style="margin-top:6px;">计算</button>
@@ -260,7 +292,7 @@
           <!-- 计算器6 -->
           <div class="calc-card" data-calc="calc6">
             <div class="calc-card-header tile-rose">
-              <span class="tile-icon">📐</span>
+              <span class="tile-icon">📍</span>
               <span class="tile-label">半径→直径</span>
               <span class="arrow">▼</span>
             </div>
@@ -272,6 +304,31 @@
               </div>
               <button class="btn btn-teal calc-btn" style="margin-top:6px;">计算</button>
               <div class="calc-result">-</div>
+            </div>
+          </div>
+
+          <!-- 新增：线程底孔计算器 -->
+          <div class="calc-card" data-calc="calc7">
+            <div class="calc-card-header tile-indigo">
+              <span class="tile-icon">🔍</span>
+              <span class="tile-label">线程底孔直径 (M线程)</span>
+              <span class="arrow">▼</span>
+            </div>
+            <div class="calc-card-body">
+              <div class="calc-formula-hint">常用 M6/M8/M10/M12 线程底孔</div>
+              <div class="form-group">
+                <label>线程规格</label>
+                <select class="calc-input calc-a">
+                  <option value="M6">M6</option>
+                  <option value="M8">M8</option>
+                  <option value="M10" selected>M10</option>
+                  <option value="M12">M12</option>
+                  <option value="M16">M16</option>
+                </select>
+              </div>
+              <button class="btn btn-teal calc-btn" style="margin-top:6px;">计算底孔直径</button>
+              <div class="calc-result">-</div>
+              <div class="calc-hint">推荐钻头直径 = 底孔直径 + 0.1~0.2mm</div>
             </div>
           </div>
         </div>
@@ -290,11 +347,14 @@
     <!-- Disclaimer -->
     <div class="disclaimer-card">
       <div class="disc-title">⚠️ 使用前注意</div>
-      <div class="disc-body">本工具给出的参数仅作为初始参考。实际加工必须结合刀具品牌、刀具牌号、材料状态、机床刚性、装夹方式、切深切宽、冷却方式、现场声音、铁屑状态和刀具磨损情况综合判断。正式加工前请先小余量试切，不要直接满刀上参数。</div>
+      <div class="disc-body">本工具给出的参数仅作为初始参考。实际加工必须结合刀具牌号、材料状态、机床刚性、装夹方式、切深切宽、冷却方式、现场声音、铁屑状态和刀具磨损情况综合判断。正式加工前请先小余量试切，不要直接满刀上参数。</div>
+    </div>
+
+    <div class="data-source">
+      📊 参数数据来源：刀具厂商手册 + 实际加工经验值（可通过 data/materials.json 修改）
     </div>
   </div>
 
   <script src="app.js"></script>
 </body>
 </html>
-
