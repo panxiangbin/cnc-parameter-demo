@@ -1,0 +1,122 @@
+{
+  "aluminum": {
+    "name": "铝合金",
+    "hardnessRange": "HB 50–120",
+    "carbide": { "vc": [200, 400], "fzBase": 0.05 },
+    "coated": { "vc": [250, 500], "fzBase": 0.06 },
+    "hss": { "vc": [80, 150], "fzBase": 0.04 },
+    "insert": { "vc": [300, 600], "fzBase": 0.08 },
+    "al_tool": { "vc": [350, 700], "fzBase": 0.08 },
+    "ball": { "vc": [150, 300], "fzBase": 0.04 },
+    "drill_bit": { "vc": [60, 120], "fzBase": 0.03 },
+    "tap_tool": { "vc": [8, 20], "fzBase": 0.02 }
+  },
+  "steel_45": {
+    "name": "45钢",
+    "hardnessRange": "HB 160–220",
+    "carbide": { "vc": [120, 200], "fzBase": 0.04 },
+    "coated": { "vc": [150, 250], "fzBase": 0.05 },
+    "hss": { "vc": [22, 35], "fzBase": 0.025 },
+    "insert": { "vc": [140, 220], "fzBase": 0.06 },
+    "al_tool": { "vc": [80, 140], "fzBase": 0.03 },
+    "ball": { "vc": [80, 140], "fzBase": 0.03 },
+    "drill_bit": { "vc": [18, 35], "fzBase": 0.02 },
+    "tap_tool": { "vc": [5, 10], "fzBase": 0.01 }
+  },
+  "steel_40cr": {
+    "name": "40Cr",
+    "hardnessRange": "HB 200–280",
+    "carbide": { "vc": [100, 180], "fzBase": 0.035 },
+    "coated": { "vc": [120, 220], "fzBase": 0.045 },
+    "hss": { "vc": [18, 30], "fzBase": 0.02 },
+    "insert": { "vc": [120, 200], "fzBase": 0.05 },
+    "al_tool": { "vc": [70, 120], "fzBase": 0.025 },
+    "ball": { "vc": [70, 120], "fzBase": 0.025 },
+    "drill_bit": { "vc": [15, 28], "fzBase": 0.015 },
+    "tap_tool": { "vc": [4, 8], "fzBase": 0.008 }
+  },
+  "steel_42crmo": {
+    "name": "42CrMo",
+    "hardnessRange": "HB 280–350",
+    "carbide": { "vc": [80, 150], "fzBase": 0.03 },
+    "coated": { "vc": [100, 180], "fzBase": 0.04 },
+    "hss": { "vc": [14, 25], "fzBase": 0.018 },
+    "insert": { "vc": [100, 170], "fzBase": 0.045 },
+    "al_tool": { "vc": [55, 100], "fzBase": 0.02 },
+    "ball": { "vc": [55, 100], "fzBase": 0.02 },
+    "drill_bit": { "vc": [12, 22], "fzBase": 0.012 },
+    "tap_tool": { "vc": [3, 6], "fzBase": 0.006 }
+  },
+  "die_steel": {
+    "name": "模具钢",
+    "hardnessRange": "HRC 30–52",
+    "carbide": { "vc": [50, 120], "fzBase": 0.025 },
+    "coated": { "vc": [70, 160], "fzBase": 0.035 },
+    "hss": { "vc": [10, 18], "fzBase": 0.015 },
+    "insert": { "vc": [60, 140], "fzBase": 0.04 },
+    "al_tool": { "vc": [35, 70], "fzBase": 0.015 },
+    "ball": { "vc": [40, 80], "fzBase": 0.02 },
+    "drill_bit": { "vc": [8, 15], "fzBase": 0.01 },
+    "tap_tool": { "vc": [2, 5], "fzBase": 0.005 }
+  },
+  "stainless": {
+    "name": "不铈钢",
+    "hardnessRange": "HB 180–280",
+    "carbide": { "vc": [60, 120], "fzBase": 0.03 },
+    "coated": { "vc": [80, 160], "fzBase": 0.04 },
+    "hss": { "vc": [12, 22], "fzBase": 0.018 },
+    "insert": { "vc": [80, 150], "fzBase": 0.045 },
+    "al_tool": { "vc": [40, 80], "fzBase": 0.02 },
+    "ball": { "vc": [40, 80], "fzBase": 0.02 },
+    "drill_bit": { "vc": [8, 18], "fzBase": 0.012 },
+    "tap_tool": { "vc": [3, 6], "fzBase": 0.005 }
+  },
+  "cast_iron": {
+    "name": "铸铁",
+    "hardnessRange": "HB 150–250",
+    "carbide": { "vc": [100, 200], "fzBase": 0.04 },
+    "coated": { "vc": [120, 250], "fzBase": 0.055 },
+    "hss": { "vc": [18, 30], "fzBase": 0.025 },
+    "insert": { "vc": [120, 220], "fzBase": 0.06 },
+    "al_tool": { "vc": [60, 120], "fzBase": 0.03 },
+    "ball": { "vc": [60, 120], "fzBase": 0.03 },
+    "drill_bit": { "vc": [15, 28], "fzBase": 0.02 },
+    "tap_tool": { "vc": [4, 8], "fzBase": 0.008 }
+  },
+  "copper": {
+    "name": "铜",
+    "hardnessRange": "HB 40–80",
+    "carbide": { "vc": [200, 400], "fzBase": 0.06 },
+    "coated": { "vc": [250, 500], "fzBase": 0.07 },
+    "hss": { "vc": [60, 120], "fzBase": 0.04 },
+    "insert": { "vc": [250, 450], "fzBase": 0.08 },
+    "al_tool": { "vc": [300, 550], "fzBase": 0.07 },
+    "ball": { "vc": [150, 300], "fzBase": 0.05 },
+    "drill_bit": { "vc": [40, 80], "fzBase": 0.03 },
+    "tap_tool": { "vc": [6, 12], "fzBase": 0.015 }
+  },
+  "titanium": {
+    "name": "铀合金",
+    "hardnessRange": "HRC 30–40",
+    "carbide": { "vc": [30, 60], "fzBase": 0.02 },
+    "coated": { "vc": [40, 80], "fzBase": 0.025 },
+    "hss": { "vc": [8, 15], "fzBase": 0.012 },
+    "insert": { "vc": [35, 65], "fzBase": 0.03 },
+    "al_tool": { "vc": [20, 40], "fzBase": 0.015 },
+    "ball": { "vc": [20, 45], "fzBase": 0.015 },
+    "drill_bit": { "vc": [6, 12], "fzBase": 0.008 },
+    "tap_tool": { "vc": [2, 4], "fzBase": 0.003 }
+  },
+  "custom": {
+    "name": "自定义",
+    "hardnessRange": "—",
+    "carbide": { "vc": [80, 150], "fzBase": 0.035 },
+    "coated": { "vc": [100, 200], "fzBase": 0.045 },
+    "hss": { "vc": [15, 25], "fzBase": 0.02 },
+    "insert": { "vc": [100, 180], "fzBase": 0.05 },
+    "al_tool": { "vc": [60, 120], "fzBase": 0.025 },
+    "ball": { "vc": [50, 100], "fzBase": 0.02 },
+    "drill_bit": { "vc": [10, 20], "fzBase": 0.015 },
+    "tap_tool": { "vc": [3, 6], "fzBase": 0.006 }
+  }
+}
