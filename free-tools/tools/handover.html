@@ -1,0 +1,101 @@
+<!doctype html>
+<html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>数控小潘｜车间交接事项整理器</title>
+<style>
+:root{--ink:#16405e;--blue:#1382bf;--muted:#69849a;--edge:#d4e9f4;--orange:#f29d35;}
+*{box-sizing:border-box}body{margin:0;font-family:"Microsoft YaHei","微软雅黑",Arial,sans-serif;color:var(--ink);background:linear-gradient(125deg,#e9f7ff,#fffdf8);min-height:100vh}
+.shell{max-width:1030px;margin:auto;padding:20px 22px 28px}
+.top{display:flex;align-items:center;justify-content:space-between;gap:16px}.brand{font-size:24px;font-weight:750;color:#1478b1}.tag{color:#1871a5;background:#e4f6ff;border:1px solid #bcddf1;border-radius:40px;padding:9px 15px;font-size:15px}
+h1{font-size:43px;line-height:1.19;margin:24px 0 8px;letter-spacing:-1px}h1 em{font-style:normal;color:#1782bb}.lede{font-size:19px;color:#5b7891;line-height:1.55;margin:9px 0 18px}
+.statline{display:grid;grid-template-columns:repeat(3,1fr);gap:15px;margin-bottom:17px}.stat{background:#fff;border:1px solid var(--edge);box-shadow:0 8px 26px #4477aa0d;border-radius:21px;padding:14px 20px;min-height:94px}.stat .hint{font-size:17px;color:#6a849a}.stat .number{font-size:39px;font-weight:800;color:#156c9f;margin-top:3px}
+.stat.warn .number{color:#e58a27}
+.paper{background:#fff;border:1px solid var(--edge);box-shadow:0 15px 45px #5380a112;border-radius:25px;overflow:hidden;padding:22px 22px 18px}
+.label{font-size:25px;font-weight:750;margin:0 0 13px}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}.f label{display:block;font-size:16px;font-weight:650;color:#58748d;margin:0 0 6px}
+.f input,.f select,.f textarea{display:block;border:1px solid #c4dce9;background:#f9fdff;color:var(--ink);font-size:20px;padding:12px 14px;border-radius:12px;width:100%;outline:none;transition:box-shadow .18s,border-color .18s}
+.f input:focus,.f select:focus,.f textarea:focus{border-color:#1787ba;box-shadow:0 0 0 4px #d5f3ff}
+.f textarea{height:54px;resize:vertical;min-height:54px}.wide{grid-column:span 2}
+.actions{display:flex;flex-wrap:wrap;gap:12px;margin-top:16px;align-items:center}
+button{appearance:none;background:#edf7fd;color:#146a9f;border:1px solid #b9dced;padding:12px 21px;border-radius:13px;font:700 18px "Microsoft YaHei",Arial;cursor:pointer;transition:transform .15s}
+button:hover{transform:translateY(-2px)}button.primary{background:linear-gradient(105deg,#0c8ccc,#22a4ca);color:white;border-color:#138bc1}
+button.warm{background:#fff7e8;border-color:#f1d9b0;color:#b17620}.tiny{padding:6px 12px;font-size:13px;border-radius:9px}
+.tablebox{background:#fff;border:1px solid var(--edge);border-radius:22px;margin-top:16px;overflow:hidden}
+.tablehead{display:flex;justify-content:space-between;align-items:center;padding:15px 20px;border-bottom:1px solid #e0edf4}.tablehead strong{font-size:23px}.tablehead span{color:#7f99a8;font-size:14px}
+table{border-collapse:collapse;width:100%;table-layout:fixed}th{background:#f1faff;color:#658499;font-size:15px;font-weight:750;text-align:left;padding:11px 12px}td{padding:12px;font-size:16px;line-height:1.4;border-top:1px solid #e6f0f5;overflow-wrap:anywhere}th:nth-child(1){width:23%}th:nth-child(2){width:27%}th:nth-child(3){width:19%}th:nth-child(4){width:31%}
+.pill{display:inline-block;padding:4px 8px;border-radius:8px;background:#eaf7ff;color:#0d76aa;font-weight:700;font-size:14px}.pill.done{background:#e9f8ec;color:#398c5d}.pill.wait{background:#fff2df;color:#bb7720}
+.empty{padding:22px;color:#7893a7;text-align:center}
+.footer{font-size:13px;color:#7592a7;line-height:1.55;margin-top:14px}
+@media(max-width:710px){.shell{padding:14px}.top{flex-wrap:wrap}h1{font-size:32px}.grid{grid-template-columns:1fr}.wide{grid-column:auto}.statline{gap:8px}.stat{padding:11px}.stat .number{font-size:31px}.actions button{font-size:16px}.tablebox{overflow-x:auto}table{min-width:650px}}
+</style></head>
+<body><main class="shell">
+<div class="top"><div class="brand">数控小潘 · 免费工具</div><div class="tag">无需联网｜打开就能用</div></div>
+<h1>车间交接班事项<br><em>一键整理</em></h1>
+<div class="lede">接班人最怕“只说了一嘴”｜把设备、异常、责任人和下一步写清楚。</div>
+<section class="statline"><div class="stat"><div class="hint">交接事项</div><div class="number" id="allCount">0</div></div><div class="stat warn"><div class="hint">仍需跟进</div><div class="number" id="pendingCount">0</div></div><div class="stat"><div class="hint">已完成</div><div class="number" id="doneCount">0</div></div></section>
+<section class="paper"><h2 class="label">新建交接记录</h2><div class="grid">
+<div class="f"><label for="machine">机床 / 项目编号</label><input id="machine" placeholder="例如：VMC-04" maxlength="40"></div>
+<div class="f"><label for="task">事项 / 待办问题</label><input id="task" placeholder="例如：换刀后首件复测" maxlength="90"></div>
+<div class="f"><label for="owner">交接给谁</label><input id="owner" placeholder="例如：晚班" maxlength="40"></div>
+<div class="f"><label for="status">当前状态</label><select id="status"><option>待跟进</option><option>处理中</option><option>已完成</option></select></div>
+<div class="f wide"><label for="next">下一步做什么</label><textarea id="next" placeholder="例如：按图纸与现场流程复核并做好记录" maxlength="180"></textarea></div></div>
+<div class="actions"><button class="primary" id="add">＋ 添加事项</button><button class="warm" id="demo">载入3条演示记录</button><button id="export">导出CSV清单</button><button id="copy">复制交接文字</button></div></section>
+<section class="tablebox"><div class="tablehead"><strong>待交接清单</strong><span id="tip">所有示例均为虚构数据</span></div>
+<table><thead><tr><th>机床 / 项目</th><th>事项</th><th>状态</th><th>责任人与下一步</th></tr></thead><tbody id="tbody"></tbody></table><div id="blank" class="empty">还没有事项，点击“载入3条演示记录”体验。</div></section>
+<div class="footer">仅用于日常工作记录，演示数据为虚构。设备安全、质量放行和现场签字仍须依公司流程进行；此工具不主动发送表单数据，记录保存在当前浏览器本地（未加密、可被同源网页访问）。请勿填写客户机密、账号密码或真实保密工单；建议只用脱敏或虚构数据。</div>
+</main>
+<script>
+"use strict";
+const $=id=>document.getElementById(id);
+const KEY="shukongxiaopan_handover_free_v1";
+let records=[];
+try{let data=JSON.parse(localStorage.getItem(KEY)||"[]");if(Array.isArray(data))records=data.filter(x=>x&&typeof x.task==="string").slice(0,100)}catch{}
+const esc=s=>String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const store=()=>{try{localStorage.setItem(KEY,JSON.stringify(records))}catch{}};
+function render(){
+ $("allCount").textContent=records.length;
+ $("pendingCount").textContent=records.filter(x=>x.status!=="已完成").length;
+ $("doneCount").textContent=records.filter(x=>x.status==="已完成").length;
+ $("blank").style.display=records.length?"none":"block";
+ $("tbody").innerHTML=records.map((r,i)=>`<tr><td><b>${esc(r.machine)}</b></td><td>${esc(r.task)}</td><td><span class="pill ${r.status==="已完成"?"done":r.status==="待跟进"?"wait":""}">${esc(r.status)}</span><div style="margin-top:7px"><button class="tiny" data-act="toggle" data-index="${i}">${r.status==="已完成"?"重设待办":"标为完成"}</button></div></td><td>${esc(r.owner)}<div style="color:#7997a8;font-size:14px;margin-top:5px">${esc(r.next)}</div></td></tr>`).join("");
+}
+$("demo").onclick=()=>{
+ records=[{machine:"VMC-01",task:"首件尺寸复核",owner:"晚班",status:"待跟进",next:"按图纸版本复核，记录结果"},{machine:"LATHE-02",task:"量具归零记录",owner:"白班",status:"已完成",next:"归档至当天记录"},{machine:"VMC-03",task:"换刀后的首件",owner:"晚班",status:"处理中",next:"关注尺寸趋势并复检"}];
+ store();render();$("tip").textContent="虚构演示记录 · 请换成自己的脱敏记录";
+};
+$("add").onclick=()=>{
+ const machine=$("machine").value.trim(),task=$("task").value.trim(),owner=$("owner").value.trim(),next=$("next").value.trim(),status=$("status").value;
+ if(!machine||!task){alert("请填写机床/项目编号和事项");return}
+ if(records.length>=100){alert("演示版最多100条");return}
+ records.unshift({machine,task,owner:owner||"未指定",next,status});
+ ["machine","task","owner","next"].forEach(k=>$(k).value="");
+ store();render();$("tip").textContent="记录已存入当前浏览器本地";
+};
+$("tbody").onclick=e=>{
+ const b=e.target.closest("button[data-act]");if(!b)return;
+ const i=Number(b.dataset.index);if(!records[i])return;
+ records[i].status=records[i].status==="已完成"?"待跟进":"已完成";store();render();
+};
+function makeCSV(){
+ const data=[["机床/项目","事项","状态","责任人","下一步"],...records.map(r=>[r.machine,r.task,r.status,r.owner,r.next])];
+ const csvCell=(v)=>{
+   let cell=String(v??"").replace(/[\r\n]+/g," ");
+   if(/^\s*[=+\-@]/.test(cell))cell="'"+cell;
+   return '"'+cell.replace(/"/g,'""')+'"';
+ };
+ return "\uFEFF"+data.map(row=>row.map(csvCell).join(",")).join("\r\n");
+}
+$("export").onclick=()=>{
+ if(!records.length){alert("请先添加交接事项");return}
+ const blob=new Blob([makeCSV()],{type:"text/csv;charset=utf-8"});
+ const url=URL.createObjectURL(blob),a=document.createElement("a");a.href=url;a.download="数控小潘_交接班记录.csv";document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),800);
+ $("tip").textContent="已生成CSV文件，可用Excel打开";
+};
+$("copy").onclick=async()=>{
+ if(!records.length){alert("请先添加交接事项");return}
+ const text=records.map((r,i)=>`${i+1}. 【${r.machine}】${r.task}｜${r.status}｜${r.owner}：${r.next}`).join("\n");
+ try{await navigator.clipboard.writeText(text);$("tip").textContent="交接文字已复制"}catch{$("tip").textContent="复制受浏览器限制，可先导出CSV"}
+};
+render();
+</script></body></html>
+
+[executed on device: PC-20260529CZBF (619bf444-a5ed-4527-b1d6-92b831484b52)]
