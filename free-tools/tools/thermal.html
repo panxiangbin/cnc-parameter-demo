@@ -1,0 +1,63 @@
+<!doctype html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>数控小潘｜工件温差尺寸变化估算</title><style>
+:root{--ink:#1d4562;--b:#117bba;--pale:#e8f6ff;--gold:#e69325;--light:#d5e9f3}
+*{box-sizing:border-box}body{margin:0;min-height:100vh;background:linear-gradient(130deg,#edf9ff,#fff8e9);font-family:"Microsoft YaHei",Arial,sans-serif;color:var(--ink)}
+.shell{padding:18px 24px 25px;max-width:1000px;margin:auto}
+header{display:flex;justify-content:space-between;align-items:center;gap:12px}.logo{font-size:23px;font-weight:800;color:var(--b)}.chip{font-size:17px;color:#2678a4;background:#ddf3ff;border:1px solid #b6dff3;border-radius:22px;padding:8px 14px}
+h1{font-size:46px;line-height:1.19;margin:26px 0 13px}h1 em{font-style:normal;color:var(--b)}
+.subtitle{font-size:22px;color:#537990;line-height:1.45;margin:0 0 18px}
+.frame{border:1px solid #c5e1ef;background:white;border-radius:27px;padding:24px;box-shadow:0 12px 35px #3081a013}
+.caption{font-size:26px;font-weight:780;margin:0 0 18px}
+.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+.field label{display:block;font-size:17px;font-weight:700;color:#527b90;margin-bottom:8px}.field input{width:100%;border:1px solid #bcdce9;background:#f7fcff;font-family:inherit;font-size:36px;font-weight:740;color:#174e75;outline:0;padding:17px 12px;border-radius:15px}
+.field input:focus{border-color:#1690ce;box-shadow:0 0 0 4px #dcf4ff}
+.hint{color:#8199aa;font-size:15px;margin-top:8px}
+.reshead{font-size:22px;font-weight:700;margin:24px 0 13px}
+.results{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.result{background:linear-gradient(160deg,#e8f6ff,#fafdff);border:1px solid #b6e0f2;border-radius:20px;padding:18px 20px}
+.result.hot{background:linear-gradient(135deg,#fff4dd,#fffdf5);border-color:#f4ddb2}
+.result span{font-size:18px;color:#64899f}.big{font-size:51px;font-weight:850;margin-top:7px;color:#117fbd;letter-spacing:-1px;white-space:nowrap}
+.hot .big{color:#d8881b}
+.legend{margin-top:16px;padding:16px;border-radius:15px;background:#f5faff;color:#517993;font-size:18px;line-height:1.5}
+.actions{display:flex;gap:12px;flex-wrap:wrap;margin-top:18px}
+button{cursor:pointer;background:#edf8ff;color:#1b76a9;border:1px solid #b7dceb;padding:12px 17px;border-radius:11px;font-size:18px;font-weight:700;font-family:inherit}
+button.primary{background:#0b8cc7;color:white;border-color:#0b8cc7}
+.warning{margin-top:20px;color:#a26927;background:#fff4df;border:1px solid #f1d8aa;border-radius:14px;padding:15px;font-size:17px;line-height:1.6}
+.foot{font-size:15px;color:#8196a3;margin-top:13px;line-height:1.5}
+@media(max-width:700px){h1{font-size:32px}.shell{padding:14px}.frame{padding:14px}.grid{grid-template-columns:1fr}.results{grid-template-columns:1fr}.big{font-size:43px}}
+</style></head>
+<body><main class="shell">
+<header><div class="logo">数控小潘 · CNC计算课堂</div><div class="chip">真实计算 · 免费工具</div></header>
+<h1>钢件升温10℃<br>100mm会<em>变化多少</em>？</h1>
+<p class="subtitle">先看一个能算得清楚的例子，再说为什么不能直接拿它判断合格。</p>
+<section class="frame"><div class="caption">线性热膨胀｜示例估算</div>
+<div class="grid"><div class="field"><label for="length">原始长度（mm）</label><input type="number" id="length" value="100" step="0.1"><div class="hint">L₀</div></div><div class="field"><label for="delta">温度变化（℃）</label><input type="number" id="delta" value="10" step="1"><div class="hint">ΔT，降温可填负数</div></div><div class="field"><label for="alpha">膨胀系数（×10⁻⁶/K）</label><input type="number" id="alpha" value="11.5" step="0.1"><div class="hint">演示钢材取11.5</div></div></div>
+<div class="reshead">实时计算结果</div>
+<div class="results"><div class="result hot"><span>理论长度变化 ΔL</span><div class="big" id="change">+0.0115 <small style="font-size:26px">mm</small></div></div><div class="result"><span>理论变化后的长度</span><div class="big" id="final">100.0115 <small style="font-size:26px">mm</small></div></div></div>
+<div class="legend" id="formula">计算式：100 × 10 × 11.5 × 10⁻⁶ = +0.0115 mm</div>
+<div class="actions"><button id="reset" class="primary">恢复100mm示例</button><button id="example">试算250mm / 5℃</button><button id="copy">复制计算结果</button></div>
+</section>
+<div class="warning">⚠ 注意：这是理想线膨胀估算，不是实测值。材料牌号、温度分布、基准与量具都会影响实际结果。不能把这个估算直接用于产品合格判定。</div>
+<div class="foot">无须联网或登录｜示例系数由用户按实际材料核实｜© 数控小潘 · 仅供学习与辅助计算</div></main>
+<script>
+"use strict";const $=s=>document.getElementById(s);
+let vals={};
+function fmt(v,dp=4){if(!Number.isFinite(v))return"—";const factor=10**dp;const rounded=Math.sign(v)*Math.round(Math.abs(v)*factor+1e-9)/factor;const s=rounded.toFixed(dp);return s==="-0.0000"?"0.0000":s}
+function render(){
+ const L=Number($("length").value),T=Number($("delta").value),a=Number($("alpha").value);
+ const valid=["length","delta","alpha"].every(k=>$(k).value.trim()!=="")&&Number.isFinite(L)&&Number.isFinite(T)&&Number.isFinite(a)&&L>0&&L<=100000&&a>0&&a<=1000&&Math.abs(T)<=1000;
+ if(!valid){$("change").textContent="参数有误";$("final").textContent="—";$("formula").textContent="请检查输入：长度和系数应为正，温差可为负";vals={error:true};return}
+ const v=L*T*a*1e-6,end=L+v;
+ vals={L,T,a,v,end};
+ $("change").innerHTML=(v>=0?"+":"")+fmt(v)+' <small style="font-size:26px">mm</small>';
+ $("final").innerHTML=fmt(end)+' <small style="font-size:26px">mm</small>';
+ $("formula").textContent=`计算式：${L} × ${T} × ${a} × 10⁻⁶ = ${v>=0?"+":""}${fmt(v)} mm`;
+}
+["length","delta","alpha"].forEach(id=>$(id).addEventListener("input",render));
+$("reset").onclick=()=>{$("length").value=100;$("delta").value=10;$("alpha").value=11.5;render()};
+$("example").onclick=()=>{$("length").value=250;$("delta").value=5;$("alpha").value=11.5;render()};
+$("copy").onclick=async()=>{if(vals.error)return;try{await navigator.clipboard.writeText($("formula").textContent)}catch{}};
+render();
+</script></body></html>
+
+[executed on device: PC-20260529CZBF (619bf444-a5ed-4527-b1d6-92b831484b52)]
