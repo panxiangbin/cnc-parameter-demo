@@ -91,7 +91,7 @@ async function offlineReady(){
  try{
   const reg=await navigator.serviceWorker.register("./sw.js",{scope:"./"});
   await navigator.serviceWorker.ready; // only after install/activate and precache complete
-  const cache=await caches.open("cnc-free-tools-mobile-v2");
+  const cache=await caches.open("cnc-free-tools-mobile-v3");
   const items=["./index.html","./tools/tolerance.html","./tools/handover.html","./tools/thermal.html"];
   const found=await Promise.all(items.map(p=>cache.match(new URL(p,location.href))));
   if(found.every(Boolean)){
