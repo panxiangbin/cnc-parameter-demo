@@ -86,9 +86,39 @@ footer a{color:#3783a7}
 @media(max-width:880px){.hero{grid-template-columns:1fr;gap:25px;padding-top:40px}.hero-art{min-height:auto}.cards{grid-template-columns:1fr}.card p{min-height:0}.steps{grid-template-columns:1fr}.benefits{gap:7px}}
 @media(max-width:550px){.container{padding:0 15px}.nav{min-height:64px!important}.identity{font-size:16px}.logo{width:36px;height:36px;font-size:13px}.nav-link{font-size:12px;padding:8px 10px}h1{letter-spacing:-.6px}.hero p{font-size:15px}.hero{padding-top:31px;padding-bottom:26px}.hero-art{padding:17px}.benefits{grid-template-columns:1fr;padding-bottom:38px}.benefit{padding:10px 13px}.section-head h2{font-size:26px}.card{padding:20px}.step-panel,.feedback{padding:19px}.feedback h2{font-size:23px}}
 @media(prefers-reduced-motion:reduce){*,*::before,*::after{scroll-behavior:auto!important;transition:none!important}}
-</style></head>
+
+/* 手机领取、真实下载、SHA-256完整性校验 */
+.mobile-flow{background:linear-gradient(145deg,#e9f7ff,#fffefb);border:2px solid #c2e1ee;border-radius:26px;padding:26px 28px;margin:3px 0 27px;box-shadow:0 13px 30px #4a97ac15}
+.mobile-flow h2{font-size:29px;margin:0 0 10px;color:#196d9b}
+.mobile-flow .flow-intro{color:#53768d;line-height:1.7;margin:0 0 15px}
+.mobile-steps{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:18px}
+.mobile-step{background:white;border:1px solid #d6eaf4;border-radius:16px;padding:16px}
+.mobile-step .ordinal{display:inline-flex;width:32px;height:32px;align-items:center;justify-content:center;border-radius:50%;background:#dff4ff;color:#0879ac;font-weight:850;margin-bottom:6px}
+.mobile-step strong{display:block;font-size:16px;color:#225d81}
+.mobile-step p{font-size:13px;color:#617f96;line-height:1.65;margin:6px 0 0}
+.download-panel{background:#fff;border:1px solid #cee6f1;border-radius:19px;padding:17px;margin:12px 0}
+.download-panel h3{font-size:19px;margin:0 0 10px}
+.download-tools{display:flex;flex-wrap:wrap;gap:10px}
+.mobile-note{font-size:13px;line-height:1.8;color:#628296;margin:8px 0}
+.file-choice{display:block;border:2px dashed #9ecee7;border-radius:14px;background:#f5fbff;padding:16px;cursor:pointer}
+.file-choice strong{font-size:15px;color:#146e9b;display:block}
+.file-choice input{display:block;max-width:100%;margin-top:10px;font-size:14px}
+.download-status{margin:12px 0 0;padding:12px;border-radius:11px;background:#eef9ff;color:#275b7e;font-size:14px;line-height:1.7;min-height:42px;overflow-wrap:anywhere}
+.download-status[data-state="pass"]{background:#eaf8f2;color:#166d50;border:1px solid #bae4d0}
+.download-status[data-level="error"],.download-status[data-state="fail"]{background:#fff3ec;color:#ae572e;border:1px solid #f0d0ba}
+.share-url{font-family:ui-monospace,Consolas,monospace;font-size:12px;width:100%;border:1px solid #cee7f3;border-radius:10px;background:#f9fcff;color:#357792;padding:10px 12px;margin-top:10px}
+.mobile-flow details{margin:11px 0;background:#fff}
+.mobile-flow details p{font-size:14px;color:#647f94}
+@media(max-width:810px){.mobile-steps{grid-template-columns:1fr}.mobile-step{padding:12px 15px}.mobile-flow{padding:18px 14px}}
+@media(max-width:550px){.mobile-flow h2{font-size:25px}.download-panel{padding:13px}.download-tools .btn{width:100%}}
+
+</style>
+<link rel="manifest" href="./manifest.webmanifest">
+<meta name="theme-color" content="#137eaf">
+<link rel="icon" href="./icon.svg" type="image/svg+xml">
+</head>
 <body>
-<header><div class="container nav"><a class="identity" href="./index.html" aria-label="数控小潘免费工具主页"><span class="logo">CNC</span>数控小潘 · 免费工具</a><a class="nav-link" href="#faq">使用说明</a></div></header>
+<header><div class="container nav"><a class="identity" href="./index.html" aria-label="数控小潘免费工具主页"><span class="logo">CNC</span>数控小潘 · 免费工具</a><a class="nav-link" href="#mobile">手机领取与校验</a></div></header>
 <main class="container">
 <section class="hero" aria-labelledby="main-title">
 <div>
@@ -120,15 +150,54 @@ footer a{color:#3783a7}
 <div class="example"><span>100mm × 10℃ × 11.5×10⁻⁶/K</span><strong>理论变化 +0.0115 mm</strong></div>
 <div class="card-actions"><a class="btn primary" href="./tools/thermal.html">在线计算温差变化 →</a><a class="btn secondary small-download" href="./tools/thermal.html" download="数控小潘_温差尺寸估算.html">↓ 下载离线HTML版</a></div></article>
 </div></section>
+
+<section class="mobile-flow" id="mobile" aria-labelledby="mobile-title">
+<h2 id="mobile-title">手机领取：下载后还能验真假</h2>
+<p class="flow-intro">不止能在线打开。推荐下载 <strong>3款工具ZIP离线包</strong>，然后在手机“文件/下载”中选回刚下载的文件，页面会在本机计算SHA-256校验值，确认文件真实存在且没有缺损。</p>
+<div class="mobile-steps" aria-label="手机领取步骤">
+<div class="mobile-step"><span class="ordinal">1</span><strong>在线直接使用</strong><p>上方点任一“在线计算/整理”，手机浏览器即可操作，无须安装。</p></div>
+<div class="mobile-step"><span class="ordinal">2</span><strong>保存离线ZIP</strong><p>点下载按钮，到“文件”或浏览器“下载”里找到ZIP；不是点了按钮就算保存成功。</p></div>
+<div class="mobile-step"><span class="ordinal">3</span><strong>把文件选回来验收</strong><p>点下方“选择已下载文件”，读取文件指纹，比对本站原版。校验只在手机进行，不上传文件。</p></div>
+</div>
+<div class="download-panel">
+<h3>① 下载完整工具包</h3>
+<div class="download-tools">
+<a class="btn primary" href="./download/CNC_3_Free_Tools.zip" download="CNC_3_Free_Tools.zip" id="bundle-download">↓ 下载3款离线工具（ZIP）</a>
+<button class="btn secondary" type="button" id="copy-link">复制领取页网址</button>
+</div>
+<p class="download-status" role="status" aria-live="polite" id="download-status">支持安卓Chrome、iPhone Safari等现代浏览器；ZIP里包含3个HTML工具、使用说明和SHA-256清单。</p>
+<input class="share-url" id="share-url" readonly aria-label="可手动复制的领取页网址" value="https://panxiangbin.github.io/cnc-parameter-demo/free-tools/">
+<p id="copy-status" class="mobile-note" role="status" aria-live="polite"></p>
+</div>
+<div class="download-panel">
+<h3>② 验证下载是否真正成功</h3>
+<label class="file-choice" for="verify-file"><strong>选择刚下载的 ZIP 或单款 HTML 进行本地校验</strong>
+<input id="verify-file" type="file" accept=".zip,.html,application/zip,text/html" aria-describedby="verify-privacy">
+</label>
+<p id="verify-privacy" class="mobile-note">无需登录；文件不会发送到任何服务器，也不收集文件内容。SHA-256一致且字节数相符才会显示通过。</p>
+<p class="download-status" role="status" aria-live="polite" id="verify-status">等待选择文件。选择后会显示“✓ 校验通过”或明确的错误原因。</p>
+</div>
+<div class="download-panel">
+<h3>③ 手机离线使用检查</h3>
+<p id="offline-status" class="download-status" role="status" aria-live="polite">正在检查网页缓存能力……</p>
+<p class="mobile-note">网页会尝试缓存首页和三个工具。安卓Chrome或iPhone Safari可按浏览器菜单“添加到主屏幕”方便重开。真正离线前，请在本人手机上先联网打开一次，再开启飞行模式测试。</p>
+</div>
+<details><summary>安卓：怎样找到ZIP并校验？</summary><p>建议在Chrome打开本站→点击上方“下载ZIP”→Chrome右上角菜单“下载内容”（或手机“文件管理→下载”）找到压缩包→返回本页，在“选择已下载文件”中选它。若需要单款工具，可解压ZIP，再用浏览器打开其中HTML；具体离线打开方式因品牌而异。</p></details>
+<details><summary>iPhone：怎样保存并校验？</summary><p>建议Safari打开本站→点击“下载ZIP”，按提示允许下载→打开“文件App→浏览→下载项”（可能位于“iCloud云盘”或“我的iPhone”）找到ZIP→返回Safari，在“选择已下载文件”中选它校验。iOS对本地HTML的打开方式不一致，也可点Safari“共享→添加到主屏幕”，联网预热后测试离线工具。</p></details>
+<details><summary>下载后仍打不开HTML怎么办？</summary><p>手机浏览器对本地HTML支持各不相同，并非ZIP损坏；先在本页上传ZIP做校验，再返回上方“在线使用”直接运行。电脑版可把ZIP解压后双击HTML。切勿在工具中输入客户保密资料。</p></details>
+</section>
+
 <section class="step-panel" aria-labelledby="how"><h2 id="how">怎么使用？</h2><div class="steps"><div><strong>① 直接点「在线使用」</strong>手机和电脑浏览器都能打开。按提示填入虚构或脱敏数据即可。</div><div><strong>② 需要离线就下载</strong>在电脑上下载单个HTML文件，双击用浏览器打开，不必安装软件。手机是否支持离线打开取决于浏览器。</div><div><strong>③ 用结果核对工作</strong>工具只做计算、整理和辅助。正式生产、质量放行必须依据图纸、材料及现场规程。</div></div></section>
 <section class="feedback" id="feedback"><h2>你工作中最想省掉哪一步？</h2><p>欢迎到「数控小潘」相关视频评论区反馈一个具体、非保密的问题。有可复现的虚构例子更容易判断能否做成小工具；本页没有私信或接单表单。</p><span class="prompt">留言格式：岗位＋最烦的重复操作＋期望结果</span><p style="margin:13px 0 0;font-size:13px">免费基础工具不是承诺无限免费定制。个性化修改需先确认范围，再讨论是否收费、如何交付。</p></section>
 <section class="faq" id="faq"><h2>使用前的说明</h2>
 <details><summary>免费使用需要登录、手机号或付款吗？</summary><p>不需要。三款基础工具可以直接打开运行，源码公开展示，不要求注册、付款或填写联系方式。</p></details>
 <details><summary>输入数据会上传到服务器吗？</summary><p>这三款工具没有主动发送表单数据的网络请求。交接班工具的记录默认留在当前浏览器的本地存储（未加密，并可能被同一网站域名下的其他网页访问），其他两款计算器默认不保存输入。托管平台可能保留普通网站访问日志；切勿输入机密资料或密码。</p></details>
-<details><summary>下载后还能用吗？</summary><p>可以。在电脑上下载HTML文件，双击使用Chrome、Edge等现代浏览器打开即可离线使用。交接班工具可导出CSV，用Excel打开。部分手机浏览器不支持直接打开本地HTML，建议优先在线试用。</p></details>
+<details><summary>下载后还能用吗？</summary><p>可以。在电脑上下载HTML文件，双击使用Chrome、Edge等现代浏览器打开即可离线使用。交接班工具可导出CSV，用Excel打开。部分手机浏览器不支持直接打开本地HTML，手机推荐先下载ZIP并在上方校验，或在线使用／添加到主屏幕。</p></details>
 <details><summary>能把计算结果直接用于工厂验收吗？</summary><p>不能。公差工具仅做输入数据的数学计算，温差工具只是理想线膨胀估算；测量、材料系数、图纸版本、现场检验与安全流程必须人工复核，工具不能代替正式生产决策。</p></details>
 <details><summary>怎么提出定制工具需求？</summary><p>在数控小潘的视频评论区描述自己的岗位、重复工作及期望的输入输出。先用虚构例子交流，勿公开公司秘密。是否能够制作、费用和交付条件都需要另行确认。</p></details>
 </section>
 </main>
 <footer><div class="container">© 2026 数控小潘 · CNC免费工具试用区。页面为静态工具展示，无账户系统；工具仅供学习、辅助整理与核对。<br>本页不隶属于GitHub或任何数控设备制造商，实际加工和验收应以适用标准及现场规程为准。</div></footer>
+<script src="./integrity-manifest.js" defer></script>
+<script src="./mobile.js" defer></script>
 </body></html>
