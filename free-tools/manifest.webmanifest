@@ -1,0 +1,20 @@
+{
+  "name": "数控小潘｜CNC免费工具",
+  "short_name": "数控小潘工具",
+  "description": "公差速算、车间交接班整理、温差尺寸估算，可在线使用或离线缓存。",
+  "id": "./index.html",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#f2fafe",
+  "theme_color": "#137eaf",
+  "lang": "zh-CN",
+  "icons": [
+    {
+      "src": "./icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    }
+  ]
+}
