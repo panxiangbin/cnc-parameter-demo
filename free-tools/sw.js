@@ -1,5 +1,5 @@
 /* Free tools offline shell: cache same-origin files only, never store form inputs or upload data. */
-const CACHE="cnc-free-tools-mobile-v2";
+const CACHE="cnc-free-tools-mobile-v3";
 const ROOT=self.registration.scope;
 const FILES=["./","./index.html","./tools/tolerance.html","./tools/handover.html","./tools/thermal.html","./mobile.js","./integrity-manifest.js","./download/CNC_3_Free_Tools.zip","./manifest.webmanifest","./icon.svg"];
 self.addEventListener("install",event=>{
